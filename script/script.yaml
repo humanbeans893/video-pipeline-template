@@ -1,0 +1,37 @@
+chapters:
+  - key: intro
+    title: "はじめに"
+    target_seconds: 10
+  - key: workflow
+    title: "作り方"
+    target_seconds: 12
+  - key: closing
+    title: "まとめ"
+    target_seconds: 6
+
+lines:
+  - id: "001"
+    chapter: intro
+    speaker: guide
+    text: "このテンプレートは、台本から動画を組み立てます。"
+    cut: "01"
+  - id: "002"
+    chapter: intro
+    speaker: partner
+    text: "音声も字幕も、自動でそろうの？"
+    cut: "01"
+  - id: "003"
+    chapter: workflow
+    speaker: guide
+    text: "はい。台本を書く、カットを描く、動画を出す。この三段階です。"
+    cut: "02"
+  - id: "004"
+    chapter: workflow
+    speaker: partner
+    text: "途中のプレビューで、タイミングも確認できます。"
+    cut: "02"
+  - id: "005"
+    chapter: closing
+    speaker: guide
+    text: "あなたの内容に置き換えて、最初の一本を作ってみてください。"
+    cut: "03"

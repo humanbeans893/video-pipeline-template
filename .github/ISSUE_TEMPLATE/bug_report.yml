@@ -1,0 +1,26 @@
+name: Bug report
+description: Report a reproducible pipeline problem
+title: "[Bug]: "
+labels: [bug]
+body:
+  - type: textarea
+    id: description
+    attributes:
+      label: Problem
+      description: What happened, and what did you expect?
+    validations:
+      required: true
+  - type: textarea
+    id: reproduce
+    attributes:
+      label: Reproduction
+      description: Include the command and a minimal configuration. Remove private information.
+    validations:
+      required: true
+  - type: input
+    id: environment
+    attributes:
+      label: Environment
+      description: OS, Python, uv, FFmpeg, and VOICEVOX versions
+    validations:
+      required: true

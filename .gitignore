@@ -1,0 +1,28 @@
+# Generated video pipeline artifacts
+/build/
+/preview.html
+
+# Local assets and exported media
+*.wav
+*.mov
+*.mp4
+*.webm
+*.m4a
+frame_*.png
+
+# Python and tooling
+__pycache__/
+*.py[cod]
+.venv/
+.pytest_cache/
+.ruff_cache/
+.coverage
+
+# Local configuration and editors
+.env
+.env.*
+!.env.example
+.vscode/
+.idea/
+.DS_Store
+Thumbs.db

@@ -1,0 +1,39 @@
+[project]
+name = "video-pipeline-template"
+version = "0.1.0"
+description = "Reusable VOICEVOX and FFmpeg pipeline for scripted videos"
+readme = "README.md"
+license = "MIT"
+license-files = ["LICENSE"]
+requires-python = ">=3.11"
+dependencies = [
+    "matplotlib>=3.8",
+    "pillow>=10.0",
+    "pyyaml>=6.0",
+]
+
+[project.scripts]
+video-pipeline = "video_pipeline.cli:main"
+
+[dependency-groups]
+dev = [
+    "pytest>=8.0",
+    "ruff>=0.8",
+]
+
+[build-system]
+requires = ["hatchling"]
+build-backend = "hatchling.build"
+
+[tool.hatch.build.targets.wheel]
+packages = ["src/video_pipeline"]
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]
+
+[tool.ruff]
+line-length = 100
+target-version = "py311"
+
+[tool.ruff.lint]
+select = ["E", "F", "I", "UP", "B", "SIM"]

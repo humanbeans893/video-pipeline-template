@@ -1,0 +1,65 @@
+<!doctype html>
+<html lang="ja">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>__TITLE__ — Preview</title>
+  <style>
+    :root { color-scheme: dark; --bg:#09151f; --panel:#102635; --line:#294254; --ink:#e7f0f5; --muted:#91a8b8; }
+    * { box-sizing:border-box; }
+    body { margin:0; background:var(--bg); color:var(--ink); font-family:system-ui,"Noto Sans JP",sans-serif; }
+    main { width:min(1160px, calc(100% - 32px)); margin:24px auto 60px; }
+    h1 { margin:0 0 16px; font-size:22px; }
+    .stage { position:relative; aspect-ratio:16/9; overflow:hidden; border-radius:12px; background:#061e2c; }
+    .stage video,.stage img { position:absolute; inset:0; width:100%; height:100%; object-fit:contain; display:none; }
+    .stage .active { display:block; }
+    #characters { display:block; pointer-events:none; z-index:3; }
+    #missing { display:none; position:absolute; inset:0; align-items:center; justify-content:center; color:#ff7f6e; font-size:28px; }
+    #caption { position:absolute; z-index:4; left:5%; right:5%; bottom:4%; text-align:center; }
+    #caption span { display:inline-block; max-width:92%; padding:8px 15px; border-radius:8px; background:rgba(4,14,22,.8); font-size:clamp(14px,2vw,23px); font-weight:700; }
+    .controls { display:flex; align-items:center; gap:12px; margin:13px 0; }
+    button { padding:8px 18px; border:1px solid var(--line); border-radius:8px; background:var(--panel); color:var(--ink); cursor:pointer; }
+    input { flex:1; }
+    #time { min-width:110px; color:var(--muted); font-variant-numeric:tabular-nums; }
+    #now { padding:11px 13px; border:1px solid var(--line); border-radius:8px; background:var(--panel); color:var(--muted); }
+    #list { margin-top:14px; max-height:360px; overflow:auto; border:1px solid var(--line); border-radius:8px; }
+    .row { display:grid; grid-template-columns:54px 80px 1fr; gap:10px; padding:9px 12px; border-bottom:1px solid var(--line); cursor:pointer; }
+    .row:last-child { border-bottom:0; }
+    .row.current { background:#19364a; }
+    .row span:last-child { color:var(--muted); }
+  </style>
+</head>
+<body><main>
+  <h1>__TITLE__ — 通しプレビュー</h1>
+  <div class="stage" id="stage">
+    <div id="missing">このカットの素材はまだありません</div>
+    <video id="characters" muted playsinline preload="auto" src="preview/characters.webm"></video>
+    <div id="caption"><span></span></div>
+  </div>
+  <div class="controls">
+    <button id="play">再生</button>
+    <input id="seek" type="range" min="0" max="__TOTAL__" step="0.02" value="0">
+    <span id="time">0:00 / 0:00</span>
+  </div>
+  <div id="now"></div>
+  <div id="list"></div>
+  <audio id="audio" preload="auto" src="preview/audio.m4a"></audio>
+</main>
+<script>
+const CUTS=__CUTS__, SUBS=__SUBTITLES__, TOTAL=__TOTAL__;
+const stage=document.querySelector('#stage'), audio=document.querySelector('#audio'), chars=document.querySelector('#characters');
+const play=document.querySelector('#play'), seek=document.querySelector('#seek'), clock=document.querySelector('#time');
+const caption=document.querySelector('#caption span'), missing=document.querySelector('#missing'), now=document.querySelector('#now'), list=document.querySelector('#list');
+const media=CUTS.map(c=>{ if(c.kind==='missing') return null; const el=document.createElement(c.kind==='video'?'video':'img'); el.src=c.src; if(el.tagName==='VIDEO'){el.muted=true;el.playsInline=true;el.preload='auto';} stage.insertBefore(el,missing); return el; });
+const rows=CUTS.map((c,i)=>{const row=document.createElement('div');row.className='row';row.innerHTML=`<b>CUT ${c.id}</b><span>${fmt(c.start)}</span><span>${c.label}</span>`;row.onclick=()=>{audio.currentTime=c.start+.01;audio.play();};list.appendChild(row);return row;});
+let current=-1, dragging=false;
+function fmt(t){return `${Math.floor(t/60)}:${String(Math.floor(t%60)).padStart(2,'0')}`;}
+function frame(){const t=dragging?+seek.value:audio.currentTime;let index=CUTS.findIndex(c=>t>=c.start&&t<c.end);if(index<0)index=CUTS.length-1;
+  if(index!==current){current=index;media.forEach(x=>x&&x.classList.remove('active'));rows.forEach(x=>x.classList.remove('current'));const cut=CUTS[index];const el=media[index];missing.style.display=el?'none':'flex';if(el)el.classList.add('active');rows[index].classList.add('current');now.textContent=`CUT ${cut.id}  ${cut.label}  ${fmt(cut.start)}–${fmt(cut.end)}`;}
+  const cut=CUTS[current],el=media[current];if(el&&el.tagName==='VIDEO'&&Number.isFinite(el.duration)){const local=Math.max(0,t-cut.start);if(Math.abs(el.currentTime-local)>.25)el.currentTime=Math.min(local,el.duration);if(!audio.paused&&el.paused)el.play().catch(()=>{});if(audio.paused&&!el.paused)el.pause();}
+  if(Number.isFinite(chars.duration)){if(Math.abs(chars.currentTime-t)>.25)chars.currentTime=Math.min(t,chars.duration);if(!audio.paused&&chars.paused)chars.play().catch(()=>{});if(audio.paused&&!chars.paused)chars.pause();}
+  const sub=SUBS.find(s=>t>=s.start&&t<s.end);caption.textContent=sub?sub.text:'';caption.style.color=sub?sub.color:'#fff';if(!dragging)seek.value=t;clock.textContent=`${fmt(t)} / ${fmt(TOTAL)}`;requestAnimationFrame(frame);}
+play.onclick=()=>audio.paused?audio.play():audio.pause();audio.onplay=()=>play.textContent='一時停止';audio.onpause=()=>play.textContent='再生';
+seek.oninput=()=>{dragging=true;audio.currentTime=+seek.value;};seek.onchange=()=>{audio.currentTime=+seek.value;dragging=false;};
+document.addEventListener('keydown',event=>{if(event.code==='Space'){event.preventDefault();play.click();}if(event.code==='ArrowRight')audio.currentTime+=5;if(event.code==='ArrowLeft')audio.currentTime-=5;});requestAnimationFrame(frame);
+</script></body></html>

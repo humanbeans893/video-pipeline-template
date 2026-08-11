@@ -1,0 +1,49 @@
+project:
+  title: "動画制作パイプラインへようこそ"
+  subtitle: "台本から音声・字幕・映像をまとめて生成"
+  target_seconds: 28
+  tolerance_seconds: 18
+
+video:
+  width: 1920
+  height: 1080
+  fps: 30
+  dpi: 100
+  background: "#061E2C"
+  reveal_seconds: 2.6
+
+voicevox:
+  url: "http://127.0.0.1:50021"
+  output_sampling_rate: 48000
+  speed_scale: 1.15
+  timeout_seconds: 60
+
+timing:
+  gap_seconds: 0.35
+  chapter_gap_seconds: 0.9
+
+subtitles:
+  font: "IPAexGothic"
+  font_size: 48
+  margin_vertical: 44
+  max_characters: 22
+
+speakers:
+  guide:
+    display_name: "ガイド"
+    voicevox_style_id: 2
+    color: "#FCD064"
+    credit: "VOICEVOX:四国めたん"
+    avatar:
+      side: left
+      body_color: "#FCD064"
+      accent_color: "#7A5B20"
+  partner:
+    display_name: "パートナー"
+    voicevox_style_id: 3
+    color: "#4BC8F0"
+    credit: "VOICEVOX:ずんだもん"
+    avatar:
+      side: right
+      body_color: "#4BC8F0"
+      accent_color: "#155A73"
