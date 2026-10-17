@@ -69,5 +69,10 @@ All generated files live under `build/` and are excluded from Git.
 Issues and pull requests are welcome. The protected `main` branch requires passing CI and
 a CODEOWNER review for outside contributions. See [CONTRIBUTING.md](CONTRIBUTING.md).
 
+Agent instructions are in [AGENTS.md](AGENTS.md), with [CLAUDE.md](CLAUDE.md) pointing to them.
+See [DYNAMIC_WORKFLOW.md](DYNAMIC_WORKFLOW.md) for dynamic workflows and
+[.agent-runs/README.md](.agent-runs/README.md) for the shared ledger. Only its README and
+`shared/tools/` are tracked in Git; session and run records stay local.
+
 The original code and example configuration use the MIT License. VOICEVOX, individual voice
 libraries, FFmpeg, user assets, and generated media retain their own terms; see [NOTICE.md](NOTICE.md).

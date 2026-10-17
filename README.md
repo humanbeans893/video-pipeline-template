@@ -95,6 +95,10 @@ src/video_pipeline/          再利用可能なパイプライン本体
 assets/                      利用者が用意する素材
 build/                       全生成物（Git対象外）
 tests/                       単体テスト
+AGENTS.md                    エージェント向けの作業規則
+CLAUDE.md                    AGENTS.mdへの参照
+DYNAMIC_WORKFLOW.md          動的ワークフローの運用手引き
+.agent-runs/                 共有の実行記録（説明と道具のみGitで追跡）
 ```
 
 ## コントリビューション
@@ -102,6 +106,10 @@ tests/                       単体テスト
 変更提案はIssueまたはPull Requestで歓迎します。`main` は保護されており、外部PRは
 CODEOWNERの承認と全CIチェックの成功が必要です。手順は [CONTRIBUTING.md](CONTRIBUTING.md)
 を参照してください。
+
+エージェントによる作業は [AGENTS.md](AGENTS.md)、動的ワークフローは
+[DYNAMIC_WORKFLOW.md](DYNAMIC_WORKFLOW.md)、共有の実行記録は
+[.agent-runs/README.md](.agent-runs/README.md)を参照してください。
 
 ## ライセンス
 
